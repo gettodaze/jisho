@@ -83,8 +83,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private Button textButton(String text){
+        Button b = new Button(MainActivity.this);
+        b.setText(text);
+        return b;
+    }
 
-        private void search(String query) {
+
+    private void search(final String query) {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://jisho.org/api/v1/search/words?keyword="+query;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -92,20 +98,24 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         d("MainActivity", "Responding...");
-
+                        resultbox.removeAllViews();
+                        resultbox.addView(textButton("Loading..."));
+                        //
                         ArrayList<Entry> entries = null;
                         try {entries = jishoAPIHandler(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        // Display the first 500 characters of the response string.
-                        String[] entryStrings = new String[entries.size()];
-                        int i = 0;
-                        for(Entry e : entries){
-                            Button b = new Button(MainActivity.this);
-                            b.setText(e.toString());
-                            resultbox.addView(b);
 
+                        resultbox.removeAllViews();
+                        if( entries != null){
+                            // set new entries ass view
+                            for(Entry e : entries) {
+                                resultbox.addView(textButton(e.toString()));
+                            }
+                        }
+                        else{
+                            resultbox.addView(textButton("No results for "+query));
                         }
                     }
                 },
@@ -119,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 });
         queue.add(stringRequest);
     }
+
+
 
 
 
