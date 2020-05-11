@@ -1,9 +1,14 @@
 package com.example.jishorough2;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,8 +33,11 @@ import java.util.ArrayList;
 
 import static android.util.Log.d;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private EditText searchbox;
     private LinearLayout resultbox;
 
@@ -38,6 +47,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         searchbox = findViewById(R.id.searchbox);
         resultbox = findViewById(R.id.resultBox);
+
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
@@ -131,7 +158,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
-
+    }
 }

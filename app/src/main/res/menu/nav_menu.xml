@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/account">
+        <menu>
+            <item android:title="@string/user"
+                android:icon="@drawable/ic_account_circle_black_24dp"/>
+            <item android:title="@string/my_lists"
+                android:icon="@drawable/ic_view_list_black_24dp"/>
+        </menu>
+    </item>
+    <item android:title="@string/app">
+        <menu>
+            <item android:title="@string/settings"
+                android:icon="@drawable/ic_settings_black_24dp"/>
+            <item android:title="@string/log_out"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"/>
+        </menu>
+    </item>
+</menu>
