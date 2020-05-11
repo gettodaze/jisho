@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -27,14 +30,14 @@ import static android.util.Log.d;
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchbox;
-    private TextView resultbox;
+    private LinearLayout resultbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchbox = findViewById(R.id.searchbox);
-        resultbox = findViewById(R.id.resultbox);
+        resultbox = findViewById(R.id.resultBox);
 
     }
 
@@ -91,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         d("MainActivity", "Responding...");
 
                         ArrayList<Entry> entries = null;
-                        try {
-                            entries = jishoAPIHandler(response);
+                        try {entries = jishoAPIHandler(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -100,16 +102,19 @@ public class MainActivity extends AppCompatActivity {
                         String[] entryStrings = new String[entries.size()];
                         int i = 0;
                         for(Entry e : entries){
-                            entryStrings[i] = e.toString();
-                            i += 1;
+                            Button b = new Button(MainActivity.this);
+                            b.setText(e.toString());
+                            resultbox.addView(b);
+
                         }
-                        resultbox.setText(String.join("\n", entryStrings));
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        resultbox.setText("That didn't work!");
+                        TextView errorbox = new TextView((MainActivity.this));
+                        errorbox.setText("That didn't work!");
+                        resultbox.addView(errorbox);
                     }
                 });
         queue.add(stringRequest);
