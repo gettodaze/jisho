@@ -10,9 +10,13 @@ import java.util.ArrayList;
 
 public class Entry {
 
+    // list of [word, reading] pairs
     private ArrayList<String[]> wordReadings;
+    // definition
     private String definition;
+    // timestamp in millis since last epoch
     private long timestamp;
+    // string note
     private String note;
 
     public Entry(JSONArray wordReadings, String definition) throws JSONException {
@@ -72,15 +76,21 @@ public class Entry {
         this.note = note;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
+    public String wordReadingsString() {
         String[] wordReadingsFormatted = new String[this.wordReadings.size()];
         for(int i = 0; i < this.wordReadings.size(); i++){
             String[] wordReading = this.wordReadings.get(i);
             wordReadingsFormatted[i] = wordReading[0] + "(" + wordReading[1] + ")";
         }
         String wordReadingsFormattedString = String.join("; ", wordReadingsFormatted);
+        return wordReadingsFormattedString;
+
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String wordReadingsFormattedString = wordReadingsString();
         return wordReadingsFormattedString + ": " + this.definition;
     }
 
