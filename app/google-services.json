@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "223540263525",
+    "firebase_url": "https://jisho-a8344.firebaseio.com",
+    "project_id": "jisho-a8344",
+    "storage_bucket": "jisho-a8344.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223540263525:android:ab1b37b98e8da2708de48c",
+        "android_client_info": {
+          "package_name": "com.example.jishorough2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223540263525-o11li0ri7ivmjjl8prr8ei9vcsj7e40s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jishorough2",
+            "certificate_hash": "332232689e0f3401837c0f4b8bfdaae056e32862"
+          }
+        },
+        {
+          "client_id": "223540263525-4c8nvpidn3odld260cvj600poka3nmit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApbRVINtlkvW6Fp-BdCloCyM4igUFrmYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223540263525-4c8nvpidn3odld260cvj600poka3nmit.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
