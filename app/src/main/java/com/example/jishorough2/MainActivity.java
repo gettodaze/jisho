@@ -62,14 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        getSupportFragmentManager().getFragments().get(0);
-        if (searchFragment != null && searchFragment.isResumed()) {
-            searchFragment.onKeyUp(keyCode, event);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

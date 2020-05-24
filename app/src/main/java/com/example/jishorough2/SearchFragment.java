@@ -124,15 +124,6 @@ public class SearchFragment extends Fragment {
         super.onDetach();
     }
 
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == 66) {
-            d("SearchFragment", "Searched for: " + etSearch.getText());
-            search(etSearch.getText().toString());
-            return true;
-        }
-
-        return false;
-    }
 
     private ArrayList<Entry> jishoAPIHandler(String response) throws JSONException {
         JSONObject responseJSON;
