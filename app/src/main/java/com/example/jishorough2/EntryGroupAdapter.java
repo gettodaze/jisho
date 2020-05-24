@@ -46,16 +46,17 @@ public class EntryGroupAdapter extends RecyclerView.Adapter<EntryGroupAdapter.En
         for(Entry e : entries.get(position).getEntries()) {
             if (i <= 3) {
                 final String definition = e.getDefinition();
-                TextView defView = (TextView) LayoutInflater.from(
+                EntryView defView = (EntryView) LayoutInflater.from(
                         holder.itemView.getContext()).inflate(R.layout.item_definition, LL, false);
                 defView.setText(definition);
+                defView.setEntry(e);
                 LL.addView(defView);
                 i++;
             }
         }
-        TextView tvWord = holder.itemView.findViewById(R.id.tvWord);
+        EntryView tvWord = holder.itemView.findViewById(R.id.tvWord);
         tvWord.setText(entries.get(position).wordReadingsString());
-
+        tvWord.setEntryGroup(entries.get(position));
     }
 
     @Override

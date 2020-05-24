@@ -99,7 +99,13 @@ public class EntryGroup {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "EntryGroup{" +
+                "word=" + this.getWordReadings() +
+                "entries=" + entries +
+                '}';
+    }
 
     public static ArrayList<EntryGroup> createGroups(ArrayList<Entry> entries){
         HashMap<String, ArrayList<Entry>> map = new HashMap<>();

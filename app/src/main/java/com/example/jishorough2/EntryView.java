@@ -18,47 +18,58 @@ public class EntryView extends androidx.appcompat.widget.AppCompatTextView
 
     private static final String DEBUG_TAG = "Entry View Gestures";
     private GestureDetectorCompat mDetector;
+    private EntryGroup mEntryGroup;
+    private Entry mEntry;
 
     public EntryView(Context context) {
         super(context);
+        mDetector = new GestureDetectorCompat(this.getContext(), this);
+        mDetector.setOnDoubleTapListener(this);
     }
 
     public EntryView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mDetector = new GestureDetectorCompat(this.getContext(), this);
+        mDetector.setOnDoubleTapListener(this);
     }
 
     public EntryView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mDetector = new GestureDetectorCompat(this.getContext(), this);
+        mDetector.setOnDoubleTapListener(this);
     }
 
+    public EntryGroup getEntryGroup() {
+        return mEntryGroup;
+    }
+
+    public boolean hasEntryGroup() {
+        return mEntryGroup != null;
+    }
+
+    public void setEntryGroup(EntryGroup mEntryGroup) {
+        this.mEntryGroup = mEntryGroup;
+    }
+
+    public Entry getEntry() {
+        return mEntry;
+    }
+
+    public void setEntry(Entry mEntry) {
+        this.mEntry = mEntry;
+    }
+    public boolean hasEntry() {
+        return mEntry != null;
+    }
 
     // Called when the activity is first created.
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-
-        int action = event.getActionMasked();
-
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN) :
-                Log.d(DEBUG_TAG,"Action was DOWN");
-                return true;
-            case (MotionEvent.ACTION_MOVE) :
-                Log.d(DEBUG_TAG,"Action was MOVE");
-                return true;
-            case (MotionEvent.ACTION_UP) :
-                Log.d(DEBUG_TAG,"Action was UP");
-                return true;
-            case (MotionEvent.ACTION_CANCEL) :
-                Log.d(DEBUG_TAG,"Action was CANCEL");
-                return true;
-            case (MotionEvent.ACTION_OUTSIDE) :
-                Log.d(DEBUG_TAG,"Movement occurred outside bounds " +
-                        "of current screen element");
-                return true;
-            default :
-                return super.onTouchEvent(event);
+    public boolean onTouchEvent(MotionEvent event){
+        Log.d(DEBUG_TAG, "touched "+this.toString());
+        if (this.mDetector.onTouchEvent(event)) {
+            return true;
         }
+        return super.onTouchEvent(event);
     }
 
 
@@ -110,6 +121,14 @@ public class EntryView extends androidx.appcompat.widget.AppCompatTextView
     public boolean onDoubleTapEvent(MotionEvent event) {
         Log.d(DEBUG_TAG, "onDoubleTapEvent: " + event.toString());
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "EntryView{" +
+                "mEntryGroup=" + mEntryGroup +
+                ", mEntry=" + mEntry +
+                '}';
     }
 
     @Override
