@@ -1,6 +1,9 @@
 package com.example.jishorough2;
 
+import android.gesture.Gesture;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -58,5 +61,13 @@ public class EntryGroupAdapter extends RecyclerView.Adapter<EntryGroupAdapter.En
     @Override
     public int getItemCount() {
         return entries.size();
+    }
+
+
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
     }
 }

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         getSupportFragmentManager().getFragments().get(0);
-        if (searchFragment != null && searchFragment.isVisible()) {
+        if (searchFragment != null && searchFragment.isResumed()) {
             searchFragment.onKeyUp(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);

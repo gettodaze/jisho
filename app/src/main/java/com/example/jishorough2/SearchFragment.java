@@ -1,12 +1,13 @@
 package com.example.jishorough2;
 
 import android.content.Context;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,8 +15,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,15 +27,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.jishorough2.dummy.DummyContent;
-import com.example.jishorough2.dummy.DummyContent.DummyItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.util.Log.d;
 
@@ -46,7 +46,8 @@ public class SearchFragment extends Fragment {
     EditText etSearch;
     RecyclerView rvDefinitions;
     Button btnSearch;
-
+    AnimationDrawable adLoading;
+    ImageView ivLoading;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -84,9 +85,22 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, true);
         etSearch = view.findViewById(R.id.etSearch);
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search(etSearch.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
         rvDefinitions = view.findViewById(R.id.rvDefinitions);
         rvDefinitions.setAdapter(new EntryGroupAdapter(new ArrayList<EntryGroup>()));
         rvDefinitions.setLayoutManager(new LinearLayoutManager(getContext()));
+        ivLoading = view.findViewById(R.id.ivLoading);
+        adLoading = (AnimationDrawable) ivLoading.getDrawable();
+        ivLoading.setVisibility(View.GONE);
         btnSearch = view.findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(
                 new View.OnClickListener() {
@@ -166,9 +180,8 @@ public class SearchFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        d("MainActivity", "Responding...");
+                        d("SearchFragment - Search", "Response received! ");
                         rvDefinitions.removeAllViews();
-                        rvDefinitions.addView(textButton("Loading..."));
                         //
                         ArrayList<Entry> entries = null;
                         try {entries = jishoAPIHandler(response);
@@ -176,7 +189,6 @@ public class SearchFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                        rvDefinitions.removeAllViews();
                         if( entries != null){
                             // set new entries ass view
                             ArrayList<EntryGroup> egs = EntryGroup.createGroups(entries);
@@ -185,6 +197,8 @@ public class SearchFragment extends Fragment {
                         else{
                             rvDefinitions.addView(textButton("No results for "+query));
                         }
+                        adLoading.stop();
+                        ivLoading.setVisibility(View.GONE);
                     }
                 },
                 new Response.ErrorListener() {
@@ -193,9 +207,14 @@ public class SearchFragment extends Fragment {
                         TextView errorbox = new TextView((getView().getContext()));
                         errorbox.setText("That didn't work!");
                         rvDefinitions.addView(errorbox);
+                        adLoading.stop();
+                        ivLoading.setVisibility(View.GONE);
                     }
                 });
+        d("SearchFragment - Search", "Adding "+url+" to queue.");
         queue.add(stringRequest);
+        ivLoading.setVisibility(View.VISIBLE);
+        adLoading.start();
     }
 
 
