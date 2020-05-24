@@ -4,14 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -26,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private EditText searchbox;
     private LinearLayout resultbox;
-    private SearchFragment searchFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +37,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        searchFragment = SearchFragment.newInstance();
-        transaction.add(R.id.fragment_container, searchFragment);
-        transaction.commit();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragmentContainerView, new SearchFragment())
+                .commit();
         setNavigation();
 
     }
@@ -55,8 +57,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar,
                 R.string.openNavDrawer,
                 R.string.closeNavDrawer
-        );
-
+        ) {
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                if (newState == DrawerLayout.STATE_SETTLING) {
+                if (getCurrentFocus() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }}}
+        };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -65,7 +75,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        d("main activity", "menu item selected");
+        switch (item.getItemId()) {
+
+            case R.id.menu_item_user: {
+                break;
+            }
+            case R.id.menu_item_lists: {
+                ListsFragment listsFragment = new ListsFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainerView, listsFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+            case R.id.menu_item_settings: {
+                break;
+            }
+            case R.id.menu_item_log_out: {
+                break;
+            }
+            default: {
+                return false;
+            }
+        }
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
