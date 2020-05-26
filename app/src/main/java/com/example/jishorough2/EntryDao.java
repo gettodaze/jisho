@@ -10,10 +10,10 @@ import java.util.List;
 
 @Dao
 public interface EntryDao {
-    @Query("SELECT * FROM entries ORDER BY timestamp, list_name DESC")
+    @Query("SELECT * FROM entries ORDER BY timestamp DESC")
     LiveData<List<Entry>> getAll();
 
-    @Query("SELECT * FROM entries WHERE list_name LIKE :listName ORDER BY timestamp DESC")
+    @Query("SELECT * FROM entries WHERE list_name LIKE :listName ORDER BY timestamp ASC")
     LiveData<List<Entry>> getList(String listName);
 
     @Insert
