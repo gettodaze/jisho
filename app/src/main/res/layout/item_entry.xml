@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.example.jishorough2.EntryView
-        android:id="@+id/entryview_listword"
+    <TextView
+        android:id="@+id/textview_listword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -20,8 +20,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.jishorough2.EntryView
-        android:id="@+id/entryview_listdef"
+    <TextView
+        android:id="@+id/textview_listdef"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -34,5 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entryview_listword"></com.example.jishorough2.EntryView>
+        app:layout_constraintTop_toBottomOf="@+id/textview_listword">
+
+    </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>
