@@ -2,9 +2,11 @@ package com.example.jishorough2;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,7 +64,20 @@ public class ListsFragment extends Fragment {
         rvList.setAdapter(adapter);
         rvList.setLayoutManager(new LinearLayoutManager(getContext()));
         mEntryViewModel = new ViewModelProvider(requireActivity()).get(EntryViewModel.class);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Entry e = adapter.getEntryAtPosition(viewHolder.getAdapterPosition());
+                Toast.makeText(getContext(), e.getTimestamp().toString(), Toast.LENGTH_SHORT).show();
+                mEntryViewModel.delete(e);
+            }
+        }).attachToRecyclerView(rvList);
         subscribe();
         return view;
     }
@@ -71,7 +86,6 @@ public class ListsFragment extends Fragment {
         mEntryViewModel.getEntries().observe(requireActivity(), new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
-                Toast.makeText(ListsFragment.this.getContext(),"text", Toast.LENGTH_SHORT).show();
                 if(entries != null){
                    adapter.setEntries(entries);
                 }

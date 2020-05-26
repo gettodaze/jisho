@@ -60,5 +60,9 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
         return entries.size();
     }
 
+    public Entry getEntryAtPosition(int position){
+        return this.entries.get(position);
+    }
+
 
 }
