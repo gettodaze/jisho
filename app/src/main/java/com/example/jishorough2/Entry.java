@@ -1,23 +1,40 @@
 package com.example.jishorough2;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
+@Entity(tableName = "entries")
 public class Entry {
 
     // list of [word, reading] pairs
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    @ColumnInfo(name="uid")
+    private String uid;
+    @ColumnInfo(name="word_readings")
     private ArrayList<String[]> wordReadings;
     // definition
+    @ColumnInfo(name="definition")
     private String definition;
     // timestamp in millis since last epoch
-    private long timestamp;
+    @ColumnInfo(name="timestamp")
+    private Instant timestamp;
     // string note
+    @ColumnInfo(name="note")
     private String note;
+    @ColumnInfo(name="list_name")
+    private String listName;
+
+    private static String DEFAULT_UID = "default";
 
     public Entry(JSONArray wordReadings, String definition) throws JSONException {
         this(Entry.wordReadingsFromJSONArr(wordReadings), definition);
@@ -25,8 +42,10 @@ public class Entry {
     public Entry(ArrayList<String[]> wordReadings, String definition) {
         this.wordReadings = wordReadings;
         this.definition = definition;
-        this.timestamp = System.currentTimeMillis();
+        this.timestamp = Instant.now();
         this.note = "";
+        this.listName = "";
+        this.uid = Entry.DEFAULT_UID;
     }
     public ArrayList<String[]> getWordReadings() {
         return wordReadings;
@@ -60,11 +79,11 @@ public class Entry {
         this.definition = definition;
     }
 
-    public long getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -76,14 +95,37 @@ public class Entry {
         this.note = note;
     }
 
+    public String getListName() {
+        return listName;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String wordReadingsString() {
         String[] wordReadingsFormatted = new String[this.wordReadings.size()];
         for(int i = 0; i < this.wordReadings.size(); i++){
             String[] wordReading = this.wordReadings.get(i);
             wordReadingsFormatted[i] = wordReading[0] + "(" + wordReading[1] + ")";
         }
-        String wordReadingsFormattedString = String.join("; ", wordReadingsFormatted);
-        return wordReadingsFormattedString;
+        return String.join("; ", wordReadingsFormatted);
 
     }
 
@@ -119,5 +161,7 @@ public class Entry {
         }
         return wordReadings;
     }
+
 }
+
 

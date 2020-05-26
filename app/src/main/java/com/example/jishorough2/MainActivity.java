@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.Instant;
+
 import static android.util.Log.d;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private EditText searchbox;
     private LinearLayout resultbox;
+    private EntryRepository mEntryRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .add(R.id.fragmentContainerView, new SearchFragment())
                 .commit();
         setNavigation();
+        mEntryRepository = new EntryRepository(getApplication());
 
     }
 
@@ -87,6 +91,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.replace(R.id.fragmentContainerView, listsFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                break;
+            }
+            case R.id.menu_item_search: {
+                SearchFragment searchFragment = new SearchFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainerView, searchFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                break;
             }
             case R.id.menu_item_settings: {
                 break;
@@ -108,6 +121,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public void insertEntry(Entry e){
+        e.setTimestamp(Instant.now());
+        if(e.getListName() == null){
+            e.setListName("favorites");
+        }
+        mEntryRepository.insert(e);
+    }
 
 
 }

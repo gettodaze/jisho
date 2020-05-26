@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,11 +45,12 @@ import static android.util.Log.d;
  * interface.
  */
 public class SearchFragment extends Fragment {
-    EditText etSearch;
-    RecyclerView rvDefinitions;
-    Button btnSearch;
-    AnimationDrawable adLoading;
-    ImageView ivLoading;
+    private EditText etSearch;
+    private RecyclerView rvDefinitions;
+    private Button btnSearch;
+    private AnimationDrawable adLoading;
+    private ImageView ivLoading;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -98,6 +101,7 @@ public class SearchFragment extends Fragment {
         rvDefinitions = view.findViewById(R.id.rvDefinitions);
         rvDefinitions.setAdapter(new EntryGroupAdapter(new ArrayList<EntryGroup>()));
         rvDefinitions.setLayoutManager(new LinearLayoutManager(getContext()));
+
         ivLoading = view.findViewById(R.id.ivLoading);
         adLoading = (AnimationDrawable) ivLoading.getDrawable();
         ivLoading.setVisibility(View.GONE);
@@ -195,9 +199,7 @@ public class SearchFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        TextView errorbox = new TextView((getView().getContext()));
-                        errorbox.setText("That didn't work!");
-                        rvDefinitions.addView(errorbox);
+                        d("SearchFragment - Search", "Error!"+error.toString());
                         adLoading.stop();
                         ivLoading.setVisibility(View.GONE);
                     }
@@ -207,6 +209,8 @@ public class SearchFragment extends Fragment {
         ivLoading.setVisibility(View.VISIBLE);
         adLoading.start();
     }
+
+
 
 
 

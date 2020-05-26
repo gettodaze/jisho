@@ -11,7 +11,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSearch"
-        tools:layout_editor_absoluteX="-9dp" />
+        tools:layout_editor_absoluteX="-9dp"
+        tools:listitem="@layout/item_entrygroup"/>
 
     <EditText
         android:id="@+id/etSearch"

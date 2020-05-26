@@ -1,7 +1,5 @@
 package com.example.jishorough2;
 
-import android.gesture.Gesture;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class EntryGroupAdapter extends RecyclerView.Adapter<EntryGroupAdapter.EntryViewHolder> {
+public class EntryGroupAdapter extends RecyclerView.Adapter<EntryGroupAdapter.EntryGroupViewHolder> {
 
     private List<EntryGroup> entries;
 
-    public class EntryViewHolder extends RecyclerView.ViewHolder {
+    public class EntryGroupViewHolder extends RecyclerView.ViewHolder {
 
         public View itemView;
-        public EntryViewHolder(View v ) {
+        public EntryGroupViewHolder(View v ) {
             super(v);
             itemView = v;
         }
@@ -30,17 +28,19 @@ public class EntryGroupAdapter extends RecyclerView.Adapter<EntryGroupAdapter.En
 
     EntryGroupAdapter(List<EntryGroup> entries){
         this.entries = entries;
+
     }
+
 
     @NonNull
     @Override
-    public EntryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EntryGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_entrygroup, parent, false);
-        return new EntryViewHolder(v);
+        return new EntryGroupViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EntryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EntryGroupViewHolder holder, int position) {
         LinearLayout LL = holder.itemView.findViewById(R.id.llDefinitions);
         int i = 0;
         for(Entry e : entries.get(position).getEntries()) {
@@ -64,11 +64,9 @@ public class EntryGroupAdapter extends RecyclerView.Adapter<EntryGroupAdapter.En
         return entries.size();
     }
 
-
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            return super.onFling(e1, e2, velocityX, velocityY);
-        }
+    public EntryGroup getItemAt(int position){
+        return entries.get(position);
     }
+
+
 }

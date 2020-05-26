@@ -1,17 +1,22 @@
 package com.example.jishorough2;
 
+import android.app.Application;
 import android.content.Context;
 import android.gesture.Gesture;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.MotionEventCompat;
+
+import java.time.Instant;
 
 public class EntryView extends androidx.appcompat.widget.AppCompatTextView
     implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
@@ -21,10 +26,13 @@ public class EntryView extends androidx.appcompat.widget.AppCompatTextView
     private EntryGroup mEntryGroup;
     private Entry mEntry;
 
+
     public EntryView(Context context) {
         super(context);
         mDetector = new GestureDetectorCompat(this.getContext(), this);
         mDetector.setOnDoubleTapListener(this);
+
+
     }
 
     public EntryView(Context context, AttributeSet attrs) {
@@ -91,6 +99,15 @@ public class EntryView extends androidx.appcompat.widget.AppCompatTextView
     @Override
     public void onLongPress(MotionEvent event) {
         Log.d(DEBUG_TAG, "onLongPress: " + event.toString());
+        if(this.getEntry() == null){
+            return;
+        }
+        this.getEntry().setListName("default");
+        this.getEntry().setTimestamp(Instant.now());
+        EntryRepository repo = new EntryRepository((Application) this.getContext().getApplicationContext());
+        repo.insert(this.getEntry());
+        Toast.makeText(getContext(), "Added "+this.getEntry().toString(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

@@ -7,6 +7,10 @@
                 android:title="@string/user"
                 android:icon="@drawable/ic_account_circle_black_24dp"/>
             <item
+                android:id="@+id/menu_item_search"
+                android:title="Search"
+                android:icon="@android:drawable/ic_menu_search"/>
+            <item
                 android:id="@+id/menu_item_lists"
                 android:title="@string/my_lists"
                 android:icon="@drawable/ic_view_list_black_24dp"/>
